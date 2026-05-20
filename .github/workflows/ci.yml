@@ -1,0 +1,31 @@
+name: "CI - Validacion"
+on:
+  pull_request:
+    branches: [dev, qa, master]
+jobs:
+  ci:
+    name: "Validar codigo"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install -r requirements.txt
+      - name: Lint
+        run: |
+          echo "=== PIPELINE CI ==="
+          echo "Rama origen:  ${{ github.head_ref }}"
+          echo "Rama destino: ${{ github.base_ref }}"
+          flake8 app.py --max-line-length=100
+          echo "Lint OK"
+      - name: Tests
+        run: |
+          pytest test_app.py -v
+          echo "Tests OK"
+      - name: Resumen
+        run: |
+          echo "================================"
+          echo "  CI COMPLETADO EXITOSAMENTE"
+          echo "  Commit: ${{ github.sha }}"
+          echo "  Autor:  ${{ github.actor }}"
+          echo "================================"
