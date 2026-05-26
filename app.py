@@ -13,5 +13,12 @@ def saludar(nombre):
     return f"Hola {nombre.strip()}! Ambiente: {env}"
 
 
+def calcular_promedio(notas):
+    """Calcula el promedio de notas."""
+    if not notas:
+        raise ValueError("Lista vacía")
+    return sum(notas) / len(notas)
+
+
 if __name__ == '__main__':
     print(saludar("Estudiante IU Digital"))
